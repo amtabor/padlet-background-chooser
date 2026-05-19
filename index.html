@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Choose a meaningful optional background for your Padlet profile or posts. Religious symbols, sports, pets, music, professions, pride, space, food, and custom uploads. Live preview included.">
+    <title>Padlet Background Chooser • Choose Your Vibe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #6366f1;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .option-card {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .option-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .option-card.selected {
+            ring: 3px;
+            ring-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            transform: scale(1.02);
+        }
+
+        .padlet-preview {
+            background: #f8fafc;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+                        0 4px 6px -4px rgb(0 0 0 / 0.1);
+            transition: background 0.3s ease;
+        }
+
+        .preview-content-card {
+            background: rgba(255,255,255, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 10px rgb(0 0 0 / 0.05);
+        }
+
+        .symbol-bg {
+            font-size: 9rem;
+            line-height: 1;
+            opacity: 0.12;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .filter-chip {
+            transition: all 0.1s ease;
+        }
+
+        .filter-chip.active {
+            background-color: #6366f1;
+            color: white;
+            box-shadow: 0 10px 10px rgb(99 102 241 / 0.2);
+        }
+
+        .mock-padlet-header {
+            background: linear-gradient(to right, #6366f1, #4f46e5);
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200">
+    <!-- Top Navigation -->
+    <nav class="border-b border-zinc-800 bg-zinc-900 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-5 flex items-center justify-between">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-2xl flex items-center justify-center">
+                        <i class="fa-solid fa-palette text-white text-2xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-display text-3xl font-semibold tracking-tighter">Padlet</span>
+                        <span class="text-indigo-400 font-medium text-sm tracking-[2px] ml-1">BACKGROUNDS</span>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-x-4">
+                    <div class="hidden md:flex items-center bg-zinc-900 border border-zinc-800 rounded-3xl px-2 py-1.5 text-sm">
+                        <div class="flex items-center px-3">
+                            <i class="fa-solid fa-users text-emerald-400 mr-2"></i>
+                            <span class="text-emerald-400 font-medium">Community Padlet</span>
+                        </div>
+                    </div>
+                    
+                    <button onclick="resetSelection()" 
+                            class="flex items-center gap-x-2 px-4 py-2 text-sm font-medium rounded-3xl border border-zinc-700 hover:bg-zinc-900 transition-colors">
+                        <i class="fa-solid fa-undo text-xs"></i>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-screen-2xl mx-auto px-8 pt-8 pb-12">
+        
+        <!-- Header / Hero -->
+        <div class="max-w-3xl mb-8">
+            <div class="flex items-center gap-x-3 mb-3">
+                <span class="px-4 py-1.5 text-xs font-semibold tracking-widest bg-indigo-950 text-indigo-400 rounded-3xl">OPTIONAL • PERSONAL</span>
+            </div>
+            <h1 class="font-display text-6xl tracking-tighter font-semibold">Choose your background</h1>
+            <p class="mt-3 text-xl text-zinc-400 max-w-md">
+                Pick something that represents who you are. Religious symbols, passions, pets, sports, food — or upload your own photo.
+            </p>
+            <div class="flex items-center gap-x-2 mt-4 text-sm">
+                <div class="flex -space-x-1">
+                    <div class="w-6 h-6 bg-zinc-700 rounded-full ring-2 ring-zinc-950 flex items-center justify-center text-[10px]">🌍</div>
+                    <div class="w-6 h-6 bg-zinc-700 rounded-full ring-2 ring-zinc-950 flex items-center justify-center text-[10px]">🎸</div>
+                    <div class="w-6 h-6 bg-zinc-700 rounded-full ring-2 ring-zinc-950 flex items-center justify-center text-[10px]">🐶</div>
+                </div>
+                <span class="text-zinc-500 text-sm">Used by 2,481 members this month</span>
+            </div>
+        </div>
+
+        <!-- How to use -->
+        <div class="mb-8 p-4 bg-zinc-900 border border-zinc-800 rounded-3xl flex flex-col md:flex-row items-start md:items-center gap-4 text-sm">
+            <div class="flex-1">
+                <span class="font-semibold text-white">How to use in your Padlet:</span> 
+                <span class="text-zinc-400">Select a background below → Screenshot or note your choice → Post it in the <span class="font-medium text-indigo-400">"Introduce Yourself"</span> or User Backgrounds section of the Padlet.</span>
+            </div>
+            <button onclick="showInstructions()" 
+                    class="shrink-0 px-5 py-2 text-sm font-semibold bg-white text-zinc-900 hover:bg-zinc-100 transition rounded-3xl flex items-center gap-x-2">
+                <i class="fa-solid fa-info-circle"></i>
+                <span>Full instructions</span>
+            </button>
+        </div>
+
+        <div class="flex flex-col xl:flex-row gap-8">
+            
+            <!-- Main Selection Area -->
+            <div class="flex-1 min-w-0">
+                
+                <!-- Search + Filters -->
+                <div class="flex flex-col sm:flex-row gap-3 mb-6">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-search absolute left-4 top-3.5 text-zinc-500"></i>
+                        <input id="search-input" 
+                               type="text" 
+                               placeholder="Search symbols, sports, pets, food..." 
+                               onkeyup="filterOptions()"
+                               class="w-full bg-zinc-900 border border-zinc-800 focus:border-indigo-500 transition pl-11 py-3 rounded-3xl text-sm placeholder:text-zinc-500 outline-none">
+                    </div>
+                    
+                    <div class="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
+                        <button onclick="filterByCategory('all')" id="filter-all"
+                                class="filter-chip active whitespace-nowrap px-5 py-2 text-sm font-medium bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 rounded-3xl">All</button>
+                        <button onclick="filterByCategory('Solid Colors')" id="filter-Solid Colors"
+                                class="filter-chip whitespace-nowrap px-4 py-2 text-sm font-medium bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-3xl">Colors</button>
+                        <button onclick="filterByCategory('Pride &amp; Rainbows')" id="filter-Pride &amp; Rainbows"
+                                class="filter-chip whitespace-nowrap px-4 py-2 text-sm font-medium bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-3xl">Pride</button>
+                        <button onclick="filterByCategory('Religious Symbols')" id="filter-Religious Symbols"
+                                class="filter-chip whitespace-nowrap px-4 py-2 text-sm font-medium bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-3xl">Faith</button>
+                        <button onclick="filterByCategory('Music')" id="filter-Music"
+                                class="filter-chip whitespace-nowrap px-4 py-2 text-sm font-medium bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-3xl">Music</button>
+                        <button onclick="filterByCategory('Sports')" id="filter-Sports"
+                                class="filter-chip whitespace-nowrap px-4 py-2 text-sm font-medium bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 rounded-3xl">Sports</button>
+                    </div>
+                </div>
+
+                <!-- Options Grid -->
+                <div id="options-container" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-3">
+                    <!-- Populated by JavaScript -->
+                </div>
+                
+                <div class="mt-4 text-xs text-zinc-500 flex items-center gap-x-2">
+                    <i class="fa-solid fa-lightbulb"></i> 
+                    <span>Tip: Click any tile to preview it live on the right. You can change your mind anytime.</span>
+                </div>
+            </div>
+
+            <!-- Live Preview Panel -->
+            <div class="xl:w-96 xl:sticky xl:top-24 h-fit">
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+                    <div class="flex items-center justify-between mb-4 px-1">
+                        <div>
+                            <span class="text-xs font-bold tracking-[1.5px] text-indigo-400">LIVE PREVIEW</span>
+                            <h3 class="font-semibold text-lg tracking-tight">How it looks in Padlet</h3>
+                        </div>
+                        <i class="fa-solid fa-eye text-xl text-zinc-600"></i>
+                    </div>
+                    
+                    <!-- Preview -->
+                    <div id="preview-container" 
+                         class="padlet-preview rounded-3xl overflow-hidden border border-zinc-700 shadow-2xl">
+                        
+                        <!-- Mock Padlet Header -->
+                        <div class="mock-padlet-header px-5 py-3 flex items-center justify-between text-white">
+                            <div class="flex items-center gap-x-2">
+                                <div class="w-8 h-8 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+                                    <i class="fa-solid fa-users text-sm"></i>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-semibold">Community Wall</div>
+                                    <div class="text-[10px] opacity-75 -mt-0.5">Your vibe here</div>
+                                </div>
+                            </div>
+                            <div class="text-xs px-3 py-1 bg-white/10 rounded-2xl font-mono tracking-widest">LIVE</div>
+                        </div>
+                        
+                        <div id="preview-bg"
+                             class="relative min-h-[260px] p-5 flex items-center justify-center transition-all duration-300"
+                             style="background-color: #18181b;">
+                            
+                            <!-- Decorative large symbol (when applicable) -->
+                            <div id="preview-symbol" 
+                                 class="symbol-bg absolute inset-0 flex items-center justify-center pointer-events-none text-white select-none">
+                            </div>
+                            
+                            <!-- Content card -->
+                            <div class="preview-content-card w-full max-w-[260px] rounded-2xl p-5 border border-white/60 shadow-xl">
+                                <div class="flex items-center gap-x-3 mb-4">
+                                    <div class="w-9 h-9 bg-gradient-to-br from-indigo-500 to-violet-500 rounded-2xl flex-shrink-0 flex items-center justify-center text-white text-xl ring-2 ring-white/70">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <div class="font-semibold text-zinc-900">Alex Rivera</div>
+                                        <div class="text-xs text-emerald-600 flex items-center gap-x-1">
+                                            <i class="fa-solid fa-circle text-[8px]"></i> 
+                                            <span>Online now</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-sm leading-snug text-zinc-700">
+                                    Hi everyone! I chose this background because it represents something that matters to me.
+                                </div>
+                                
+                                <div id="preview-tag" 
+                                     class="mt-4 inline-flex items-center text-xs font-medium px-3 h-7 rounded-2xl bg-zinc-100 text-zinc-600">
+                                    <!-- JS injected -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 px-1">
+                        <div id="selected-info" class="text-sm">
+                            <span class="font-medium text-white">No background selected yet</span>
+                        </div>
+                        <div id="selected-description" class="text-xs text-zinc-400 mt-0.5 min-h-[18px]"></div>
+                    </div>
+                    
+                    <!-- Action buttons -->
+                    <div class="mt-5 grid grid-cols-2 gap-3">
+                        <button onclick="applySelection()" 
+                                class="col-span-2 sm:col-span-1 flex items-center justify-center gap-x-2 py-3 text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 active:bg-indigo-700 transition rounded-3xl">
+                            <i class="fa-solid fa-check-double"></i>
+                            <span>Use in Padlet</span>
+                        </button>
+                        
+                        <button onclick="copySelection()" 
+                                class="flex items-center justify-center gap-x-2 py-3 text-sm font-medium border border-zinc-700 hover:bg-zinc-800 transition rounded-3xl">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>Copy choice</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Upload custom -->
+                <div class="mt-4 bg-zinc-900 border border-zinc-800 rounded-3xl p-5">
+                    <div class="flex items-center gap-x-3 mb-3">
+                        <i class="fa-solid fa-upload text-emerald-400"></i>
+                        <span class="font-semibold">Upload your own photo</span>
+                    </div>
+                    
+                    <label class="cursor-pointer block">
+                        <div class="border border-dashed border-zinc-700 hover:border-emerald-500 transition rounded-2xl p-6 text-center">
+                            <input type="file" id="custom-upload" accept="image/*" class="hidden" onchange="handleCustomUpload(event)">
+                            <i class="fa-solid fa-image text-3xl text-zinc-600 mb-2"></i>
+                            <div class="text-sm font-medium">Drop image or click to upload</div>
+                            <div class="text-[10px] text-zinc-500 mt-0.5">JPG, PNG • Max 5MB (demo)</div>
+                        </div>
+                    </label>
+                    
+                    <div id="custom-preview" class="hidden mt-3">
+                        <div class="flex items-center gap-x-3 bg-zinc-950 rounded-2xl p-2 border border-zinc-800">
+                            <img id="custom-thumb" class="w-10 h-10 object-cover rounded-xl border border-zinc-700" alt="Custom preview">
+                            <div class="flex-1 min-w-0">
+                                <div id="custom-filename" class="text-xs font-medium truncate"></div>
+                                <div class="text-emerald-400 text-xs">Custom background ready</div>
+                            </div>
+                            <button onclick="selectCustomBackground()" 
+                                    class="text-xs px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded-2xl font-medium">Select</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <footer class="border-t border-zinc-800 py-6 text-center text-xs text-zinc-500">
+        Made for your Padlet community • Backgrounds represent identity, passions &amp; values • All options are optional &nbsp;•&nbsp; 
+        <a href="https://github.com/amtabor/padlet-background-chooser" class="hover:text-zinc-400 underline">View on GitHub</a>
+    </footer>
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#6366f1');
+        }
+
+        // All background options
+        let options = [
+            // === SOLID COLORS ===
+            { id: 'color-sky', category: 'Solid Colors', label: 'Sky Blue', type: 'color', value: '#0ea5e9', description: 'Calm, open-minded, and optimistic' },
+            { id: 'color-emerald', category: 'Solid Colors', label: 'Emerald Green', type: 'color', value: '#10b981', description: 'Growth, nature, and balance' },
+            { id: 'color-rose', category: 'Solid Colors', label: 'Rose Pink', type: 'color', value: '#f43f5e', description: 'Warmth, compassion, and energy' },
+            { id: 'color-violet', category: 'Solid Colors', label: 'Royal Violet', type: 'color', value: '#8b5cf6', description: 'Creativity and imagination' },
+            { id: 'color-amber', category: 'Solid Colors', label: 'Warm Amber', type: 'color', value: '#f59e0b', description: 'Joy, enthusiasm, and positivity' },
+            { id: 'color-slate', category: 'Solid Colors', label: 'Slate Gray', type: 'color', value: '#475569', description: 'Modern, grounded, and professional' },
+            { id: 'color-teal', category: 'Solid Colors', label: 'Ocean Teal', type: 'color', value: '#14b8a6', description: 'Depth, healing, and tranquility' },
+            { id: 'color-red', category: 'Solid Colors', label: 'Bold Red', type: 'color', value: '#ef4444', description: 'Passion, courage, and strength' },
+
+            // === PRIDE & RAINBOWS ===
+            { id: 'pride-rainbow', category: 'Pride & Rainbows', label: 'Rainbow', type: 'rainbow', value: 'rainbow', description: 'Pride, diversity, love & inclusion' },
+            { id: 'pride-progress', category: 'Pride & Rainbows', label: 'Progress Pride', type: 'rainbow', value: 'progress', description: 'Inclusive pride flag' },
+            { id: 'pride-trans', category: 'Pride & Rainbows', label: 'Transgender Pride', type: 'symbol', value: '🏳️‍⚧️', description: 'Trans joy and visibility' },
+            { id: 'pride-bi', category: 'Pride & Rainbows', label: 'Bisexual Pride', type: 'symbol', value: '💖💜💙', description: 'Bi+ community pride' },
+
+            // === RELIGIOUS SYMBOLS ===
+            { id: 'rel-cross', category: 'Religious Symbols', label: 'Christian Cross', type: 'symbol', value: '✝️', description: 'Faith, hope, and resurrection' },
+            { id: 'rel-crescent', category: 'Religious Symbols', label: 'Star & Crescent', type: 'symbol', value: '☪️', description: 'Islamic faith and guidance' },
+            { id: 'rel-om', category: 'Religious Symbols', label: 'Om Symbol', type: 'symbol', value: '🕉️', description: 'Hinduism, peace & spirituality' },
+            { id: 'rel-dharma', category: 'Religious Symbols', label: 'Dharmachakra', type: 'symbol', value: '☸️', description: 'Buddhist path to enlightenment' },
+            { id: 'rel-david', category: 'Religious Symbols', label: 'Star of David', type: 'symbol', value: '✡️', description: 'Jewish faith and identity' },
+            { id: 'rel-yinyang', category: 'Religious Symbols', label: 'Yin Yang', type: 'symbol', value: '☯️', description: 'Balance and harmony (Taoism)' },
+            { id: 'rel-khanda', category: 'Religious Symbols', label: 'Khanda (Sikh)', type: 'symbol', value: '☬', description: 'Sikh faith and justice' },
+            { id: 'rel-pagan', category: 'Religious Symbols', label: 'Pentacle', type: 'symbol', value: '⛤️', description: 'Pagan & earth-based spirituality' },
+
+            // === MUSIC ===
+            { id: 'music-notes', category: 'Music', label: 'Musical Notes', type: 'symbol', value: '🎵', description: 'Melody, rhythm & emotion' },
+            { id: 'music-guitar', category: 'Music', label: 'Acoustic Guitar', type: 'symbol', value: '🎸', description: 'Songwriting and live music' },
+            { id: 'music-piano', category: 'Music', label: 'Grand Piano', type: 'symbol', value: '🎹', description: 'Classical & composition' },
+            { id: 'music-drums', category: 'Music', label: 'Drum Kit', type: 'symbol', value: '🥁', description: 'Energy, beats & performance' },
+            { id: 'music-violin', category: 'Music', label: 'Violin', type: 'symbol', value: '🎻', description: 'Strings and elegance' },
+            { id: 'music-headphones', category: 'Music', label: 'Headphones', type: 'symbol', value: '🎧', description: 'Deep listening & production' },
+            { id: 'music-mic', category: 'Music', label: 'Microphone', type: 'symbol', value: '🎤', description: 'Singing, podcasting, voice' },
+
+            // === SPORTS ===
+            { id: 'sport-soccer', category: 'Sports', label: 'Soccer', type: 'symbol', value: '⚽', description: 'Teamwork and the beautiful game' },
+            { id: 'sport-basketball', category: 'Sports', label: 'Basketball', type: 'symbol', value: '🏀', description: 'Fast breaks and community' },
+            { id: 'sport-football', category: 'Sports', label: 'American Football', type: 'symbol', value: '🏈', description: 'Strategy, power & Sundays' },
+            { id: 'sport-swim', category: 'Sports', label: 'Swimming', type: 'symbol', value: '🏊‍♂️', description: 'Endurance and flow' },
+            { id: 'sport-tennis', category: 'Sports', label: 'Tennis', type: 'symbol', value: '🎾', description: 'Precision and mental game' },
+            { id: 'sport-run', category: 'Sports', label: 'Running', type: 'symbol', value: '🏃‍♂️', description: 'Personal bests & discipline' },
+            { id: 'sport-yoga', category: 'Sports', label: 'Yoga', type: 'symbol', value: '🧘‍♀️', description: 'Mindfulness and flexibility' },
+            { id: 'sport-golf', category: 'Sports', label: 'Golf', type: 'symbol', value: '⛳', description: 'Focus and the outdoors' },
+
+            // === LIFESTYLE & FASHION ===
+            { id: 'life-purse', category: 'Lifestyle & Fashion', label: 'Designer Handbag', type: 'symbol', value: '👜', description: 'Style, success & self-expression' },
+            { id: 'life-heels', category: 'Lifestyle & Fashion', label: 'High Heels', type: 'symbol', value: '👠', description: 'Confidence and elegance' },
+            { id: 'life-watch', category: 'Lifestyle & Fashion', label: 'Luxury Watch', type: 'symbol', value: '⌚', description: 'Time, legacy & achievement' },
+            { id: 'life-credit', category: 'Lifestyle & Fashion', label: 'Premium Card', type: 'symbol', value: '💳', description: 'Financial freedom & travel' },
+            { id: 'life-cowboy', category: 'Lifestyle & Fashion', label: 'Cowboy Spirit', type: 'symbol', value: '🤠', description: 'Freedom, adventure & roots' },
+            { id: 'life-shopping', category: 'Lifestyle & Fashion', label: 'Retail Therapy', type: 'symbol', value: '🛍️', description: 'Joy in the little things' },
+
+            // === CARDS & GAMES ===
+            { id: 'cards-spade', category: 'Cards & Games', label: 'Spades ♠️', type: 'symbol', value: '♠️', description: 'Strategy and intellect' },
+            { id: 'cards-heart', category: 'Cards & Games', label: 'Hearts ♥️', type: 'symbol', value: '♥️', description: 'Love, passion & emotion' },
+            { id: 'cards-diamond', category: 'Cards & Games', label: 'Diamonds ♦️', type: 'symbol', value: '♦️', description: 'Wealth and clarity' },
+            { id: 'cards-club', category: 'Cards & Games', label: 'Clubs ♣️', type: 'symbol', value: '♣️', description: 'Growth and luck' },
+            { id: 'cards-joker', category: 'Cards & Games', label: 'Joker Card', type: 'symbol', value: '🃏', description: 'Fun, wildcards & humor' },
+            { id: 'cards-100', category: 'Cards & Games', label: 'The 100', type: 'symbol', value: '💯', description: 'Excellence, perfect score' },
+
+            // === PROFESSIONS ===
+            { id: 'prof-doctor', category: 'Professions', label: 'Healthcare Hero', type: 'symbol', value: '👩‍⚕️', description: 'Healing and care for others' },
+            { id: 'prof-teacher', category: 'Professions', label: 'Educator', type: 'symbol', value: '👩‍🏫', description: 'Teaching, mentoring & growth' },
+            { id: 'prof-chef', category: 'Professions', label: 'Chef', type: 'symbol', value: '👨‍🍳', description: 'Creativity in the kitchen' },
+            { id: 'prof-pilot', category: 'Professions', label: 'Pilot / Aviation', type: 'symbol', value: '🧑‍✈️', description: 'Adventure and precision' },
+            { id: 'prof-fire', category: 'Professions', label: 'Firefighter', type: 'symbol', value: '🧑‍🚒', description: 'Bravery and service' },
+            { id: 'prof-dev', category: 'Professions', label: 'Developer / Coder', type: 'symbol', value: '💻', description: 'Building the future' },
+            { id: 'prof-artist', category: 'Professions', label: 'Artist', type: 'symbol', value: '🎨', description: 'Creativity and vision' },
+            { id: 'prof-astro', category: 'Professions', label: 'Astronaut', type: 'symbol', value: '🧑‍🚀', description: 'Exploration and wonder' },
+
+            // === PETS ===
+            { id: 'pet-dog', category: 'Pets', label: 'Dog', type: 'symbol', value: '🐶', description: 'Loyalty, joy & unconditional love' },
+            { id: 'pet-cat', category: 'Pets', label: 'Cat', type: 'symbol', value: '🐱', description: 'Independence and curiosity' },
+            { id: 'pet-rabbit', category: 'Pets', label: 'Rabbit', type: 'symbol', value: '🐰', description: 'Gentle and playful energy' },
+            { id: 'pet-bird', category: 'Pets', label: 'Bird', type: 'symbol', value: '🐦', description: 'Freedom and song' },
+            { id: 'pet-fish', category: 'Pets', label: 'Fish', type: 'symbol', value: '🐠', description: 'Calm and peaceful presence' },
+            { id: 'pet-horse', category: 'Pets', label: 'Horse', type: 'symbol', value: '🐴', description: 'Strength, grace & partnership' },
+            { id: 'pet-panda', category: 'Pets', label: 'Panda', type: 'symbol', value: '🐼', description: 'Gentle giant & conservation' },
+            { id: 'pet-turtle', category: 'Pets', label: 'Turtle', type: 'symbol', value: '🐢', description: 'Patience and wisdom' },
+
+            // === SPACE ===
+            { id: 'space-rocket', category: 'Space', label: 'Rocket', type: 'symbol', value: '🚀', description: 'Ambition and reaching new heights' },
+            { id: 'space-planet', category: 'Space', label: 'Planet', type: 'symbol', value: '🪐', description: 'Wonder and the unknown' },
+            { id: 'space-galaxy', category: 'Space', label: 'Galaxy', type: 'symbol', value: '🌌', description: 'Infinite possibility' },
+            { id: 'space-alien', category: 'Space', label: 'Alien', type: 'symbol', value: '👽', description: 'Openness to the extraordinary' },
+            { id: 'space-moon', category: 'Space', label: 'Moon', type: 'symbol', value: '🌕', description: 'Cycles, dreams & mystery' },
+
+            // === FARMING & NATURE ===
+            { id: 'farm-tractor', category: 'Farming & Nature', label: 'Tractor', type: 'symbol', value: '🚜', description: 'Hard work and the land' },
+            { id: 'farm-wheat', category: 'Farming & Nature', label: 'Wheat / Harvest', type: 'symbol', value: '🌾', description: 'Abundance and gratitude' },
+            { id: 'farm-cow', category: 'Farming & Nature', label: 'Cow', type: 'symbol', value: '🐄', description: 'Farm life and simplicity' },
+            { id: 'farm-farmer', category: 'Farming & Nature', label: 'Farmer', type: 'symbol', value: '🧑‍🌾', description: 'Connection to earth' },
+            { id: 'farm-sunflower', category: 'Farming & Nature', label: 'Sunflower', type: 'symbol', value: '🌻', description: 'Positivity and growth' },
+
+            // === FOOD & DRINK ===
+            { id: 'food-pizza', category: 'Food & Drink', label: 'Pizza', type: 'symbol', value: '🍕', description: 'Comfort food & gatherings' },
+            { id: 'food-taco', category: 'Food & Drink', label: 'Taco', type: 'symbol', value: '🌮', description: 'Flavor, culture & fun' },
+            { id: 'food-fries', category: 'Food & Drink', label: 'Fries', type: 'symbol', value: '🍟', description: 'Simple pleasures' },
+            { id: 'food-eggplant', category: 'Food & Drink', label: 'Eggplant', type: 'symbol', value: '🍆', description: 'Bold flavor (and memes)' },
+            { id: 'food-burger', category: 'Food & Drink', label: 'Burger', type: 'symbol', value: '🍔', description: 'Classic American comfort' },
+            { id: 'food-sushi', category: 'Food & Drink', label: 'Sushi', type: 'symbol', value: '🍣', description: 'Precision and fresh vibes' },
+            { id: 'food-coffee', category: 'Food & Drink', label: 'Coffee', type: 'symbol', value: '☕', description: 'Morning ritual & focus' },
+            { id: 'food-avocado', category: 'Food & Drink', label: 'Avocado', type: 'symbol', value: '🥑', description: 'Healthy & trendy living' },
+
+            // === FUN & MISCELLANEOUS ===
+            { id: 'fun-heart', category: 'Fun & Misc', label: 'Heart', type: 'symbol', value: '❤️', description: 'Love, kindness & connection' },
+            { id: 'fun-fire', category: 'Fun & Misc', label: 'Fire', type: 'symbol', value: '🔥', description: 'Passion, energy & lit vibes' },
+            { id: 'fun-sparkles', category: 'Fun & Misc', label: 'Sparkles', type: 'symbol', value: '✨', description: 'Magic, creativity & wonder' },
+            { id: 'fun-globe', category: 'Fun & Misc', label: 'Globe', type: 'symbol', value: '🌍', description: 'Travel, cultures & global citizen' },
+            { id: 'fun-books', category: 'Fun & Misc', label: 'Books', type: 'symbol', value: '📚', description: 'Knowledge and stories' },
+            { id: 'fun-lightbulb', category: 'Fun & Misc', label: 'Lightbulb', type: 'symbol', value: '💡', description: 'Ideas, innovation & insight' },
+            { id: 'fun-peace', category: 'Fun & Misc', label: 'Peace Sign', type: 'symbol', value: '✌️', description: 'Harmony and chill energy' },
+            { id: 'fun-star', category: 'Fun & Misc', label: 'Star', type: 'symbol', value: '⭐', description: 'Shining bright & goals' },
+        ];
+
+        let selectedOption = null;
+        let customImageURL = null;
+
+        // Render all options
+        function renderOptions(filteredOptions = null) {
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            
+            const toRender = filteredOptions || options;
+            
+            toRender.forEach(option => {
+                const card = document.createElement('div');
+                card.className = `option-card bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-3xl p-3 cursor-pointer flex flex-col items-center text-center group ${selectedOption && selectedOption.id === option.id ? 'selected ring-2 ring-indigo-500 border-indigo-500' : ''}`;
+                card.dataset.id = option.id;
+                
+                let visualHTML = '';
+                
+                if (option.type === 'color') {
+                    visualHTML = `
+                        <div class="w-16 h-16 rounded-2xl shadow-inner mb-3 ring-1 ring-inset ring-white/10" 
+                             style="background-color: ${option.value}"></div>
+                    `;
+                } else if (option.type === 'rainbow') {
+                    visualHTML = `
+                        <div class="w-16 h-16 rounded-2xl mb-3 overflow-hidden ring-1 ring-white/10 shadow-inner"
+                             style="background: linear-gradient(to right, #ef4444, #f59e0b, #eab308, #22c55e, #3b82f6, #8b5cf6, #ec4899);">
+                        </div>
+                    `;
+                } else {
+                    // symbol
+                    visualHTML = `
+                        <div class="w-16 h-16 flex items-center justify-center text-6xl mb-3 bg-zinc-950 rounded-2xl group-hover:scale-110 transition-transform">
+                            ${option.value}
+                        </div>
+                    `;
+                }
+                
+                card.innerHTML = `
+                    ${visualHTML}
+                    <div class="option-label px-1">${option.label}</div>
+                    <div class="text-[10px] text-zinc-500 mt-0.5 px-1">${option.category}</div>
+                `;
+                
+                card.onclick = () => selectOption(option, card);
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Filter options
+        function filterOptions() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            if (!searchTerm) {
+                renderOptions();
+                return;
+            }
+            
+            const filtered = options.filter(opt => 
+                opt.label.toLowerCase().includes(searchTerm) || 
+                opt.category.toLowerCase().includes(searchTerm) ||
+                (opt.description && opt.description.toLowerCase().includes(searchTerm))
+            );
+            
+            renderOptions(filtered);
+        }
+
+        // Filter by category
+        let currentCategoryFilter = 'all';
+
+        function filterByCategory(category) {
+            // Update active chip styles
+            document.querySelectorAll('.filter-chip').forEach(chip => {
+                chip.classList.remove('active', 'bg-indigo-600', 'text-white');
+                chip.classList.add('bg-zinc-900', 'border-zinc-800');
+                
+                if (category === 'all' && chip.id === 'filter-all') {
+                    chip.classList.add('active', 'bg-indigo-600', 'text-white');
+                    chip.classList.remove('bg-zinc-900', 'border-zinc-800');
+                } else if (chip.id === `filter-${category}`) {
+                    chip.classList.add('active', 'bg-indigo-600', 'text-white');
+                    chip.classList.remove('bg-zinc-900', 'border-zinc-800');
+                }
+            });
+            
+            currentCategoryFilter = category;
+            
+            const searchTerm = document.getElementById('search-input').value.toLowerCase().trim();
+            
+            let filtered = options;
+            
+            if (category !== 'all') {
+                filtered = filtered.filter(opt => opt.category === category);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(opt => 
+                    opt.label.toLowerCase().includes(searchTerm) || 
+                    opt.category.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderOptions(filtered);
+        }
+
+        // Select an option
+        function selectOption(option, cardElement) {
+            // Deselect all cards
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected', 'ring-2', 'ring-indigo-500', 'border-indigo-500');
+            });
+            
+            // Select this one
+            cardElement.classList.add('selected', 'ring-2', 'ring-indigo-500', 'border-indigo-500');
+            
+            selectedOption = option;
+            customImageURL = null; // clear custom if picking preset
+            
+            updatePreview(option);
+        }
+
+        // Update the live preview
+        function updatePreview(option) {
+            const previewBg = document.getElementById('preview-bg');
+            const previewSymbol = document.getElementById('preview-symbol');
+            const selectedInfo = document.getElementById('selected-info');
+            const selectedDesc = document.getElementById('selected-description');
+            const previewTag = document.getElementById('preview-tag');
+            
+            // Reset
+            previewBg.style.backgroundImage = '';
+            previewBg.style.backgroundColor = '';
+            previewSymbol.innerHTML = '';
+            previewSymbol.style.opacity = '0.12';
+            previewSymbol.style.fontSize = '9rem';
+            
+            if (option.type === 'color') {
+                previewBg.style.backgroundColor = option.value;
+            } 
+            else if (option.type === 'rainbow') {
+                if (option.value === 'rainbow') {
+                    previewBg.style.background = 'linear-gradient(135deg, #ef4444, #f59e0b, #eab308, #22c55e, #3b82f6, #8b5cf6)';
+                } else {
+                    previewBg.style.background = 'linear-gradient(to right, #000000, #784f17, #ff0018, #ff8c00, #ffef00, #008026, #004dff, #750787)';
+                }
+                previewBg.style.backgroundSize = '200% 200%';
+                previewSymbol.style.opacity = '0.08';
+            } 
+            else {
+                // Symbol
+                previewBg.style.backgroundColor = '#18181b';
+                previewSymbol.innerHTML = option.value;
+            }
+            
+            // Update info
+            selectedInfo.innerHTML = `
+                <span class="font-semibold text-white">${option.label}</span>
+                <span class="text-xs ml-2 px-2 py-0.5 bg-zinc-800 rounded-xl text-zinc-400">${option.category}</span>
+            `;
+            
+            selectedDesc.textContent = option.description || '';
+            
+            // Update tag in preview
+            previewTag.innerHTML = `
+                <span class="flex items-center gap-x-1.5">
+                    ${option.type === 'color' ? 
+                        `<span class="inline-block w-2.5 h-2.5 rounded-full" style="background:${option.value}"></span>` : 
+                        `<span>${option.value}</span>`}
+                    <span>${option.label}</span>
+                </span>
+            `;
+            
+            previewBg.dataset.currentOptionId = option.id;
+        }
+
+        // Handle custom image upload
+        function handleCustomUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                customImageURL = e.target.result;
+                
+                // Show thumbnail
+                document.getElementById('custom-thumb').src = customImageURL;
+                document.getElementById('custom-filename').textContent = file.name;
+                document.getElementById('custom-preview').classList.remove('hidden');
+                
+                // Auto-select the custom as current
+                selectCustomBackground();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function selectCustomBackground() {
+            if (!customImageURL) return;
+            
+            // Deselect preset cards
+            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected', 'ring-2', 'ring-indigo-500'));
+            
+            selectedOption = {
+                id: 'custom-upload',
+                category: 'Custom Upload',
+                label: 'Your Uploaded Photo',
+                type: 'custom',
+                value: customImageURL,
+                description: 'Your personal photo or image'
+            };
+            
+            updateCustomPreview();
+        }
+
+        function updateCustomPreview() {
+            const previewBg = document.getElementById('preview-bg');
+            const previewSymbol = document.getElementById('preview-symbol');
+            const selectedInfo = document.getElementById('selected-info');
+            const selectedDesc = document.getElementById('selected-description');
+            const previewTag = document.getElementById('preview-tag');
+            
+            previewSymbol.innerHTML = '';
+            previewBg.style.backgroundImage = `url('${customImageURL}')`;
+            previewBg.style.backgroundSize = 'cover';
+            previewBg.style.backgroundPosition = 'center';
+            previewBg.style.backgroundColor = '';
+            
+            selectedInfo.innerHTML = `<span class="font-semibold text-white">Your Custom Photo</span>`;
+            selectedDesc.textContent = 'Personal background image';
+            previewTag.innerHTML = `<span class="flex items-center gap-x-1.5"><i class="fa-solid fa-image text-xs"></i> <span>Custom Upload</span></span>`;
+        }
+
+        // Apply selection (simulate)
+        function applySelection() {
+            if (!selectedOption) {
+                alert("Please select a background first!");
+                return;
+            }
+            
+            const message = selectedOption.type === 'custom' 
+                ? `Custom background selected! In your real Padlet, upload this image to your profile or post background settings.`
+                : `Great choice! "${selectedOption.label}" has been selected.`;
+            
+            // Nice toast simulation
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 bg-zinc-900 border border-zinc-700 shadow-2xl text-white px-6 py-3.5 rounded-3xl flex items-center gap-x-3 z-[999]`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-x-3">
+                    <i class="fa-solid fa-check-circle text-emerald-400 text-xl"></i>
+                    <div>
+                        <div class="font-semibold">${message}</div>
+                        <div class="text-xs text-zinc-400">You can now post this choice in the User Backgrounds section of your Padlet.</div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all 0.3s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.parentNode.removeChild(toast), 300);
+            }, 4200);
+        }
+
+        // Copy selection to clipboard
+        function copySelection() {
+            if (!selectedOption) {
+                alert("Select a background first to copy details.");
+                return;
+            }
+            
+            let text = `My chosen Padlet background: ${selectedOption.label}\n`;
+            text += `Category: ${selectedOption.category}\n`;
+            if (selectedOption.description) text += `Why: ${selectedOption.description}\n`;
+            text += `\n(Selected from the optional backgrounds chooser)`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.createElement('div');
+                toast.style.cssText = 'position:fixed;bottom:20px;right:20px;background:#18181b;border:1px solid #3f3f46;color:#fff;padding:10px 18px;border-radius:9999px;font-size:13px;box-shadow:0 10px 10px rgb(0 0 0 / 0.2)';
+                toast.innerHTML = `✅ Copied to clipboard`;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.style.transition = 'opacity .25s';
+                    toast.style.opacity = '0';
+                    setTimeout(() => document.body.removeChild(toast), 200);
+                }, 1600);
+            }).catch(() => {
+                prompt("Copy this text:", text);
+            });
+        }
+
+        function resetSelection() {
+            selectedOption = null;
+            customImageURL = null;
+            
+            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected', 'ring-2', 'ring-indigo-500'));
+            document.getElementById('custom-preview').classList.add('hidden');
+            document.getElementById('custom-upload').value = '';
+            
+            // Reset preview
+            const previewBg = document.getElementById('preview-bg');
+            const previewSymbol = document.getElementById('preview-symbol');
+            const selectedInfo = document.getElementById('selected-info');
+            const selectedDesc = document.getElementById('selected-description');
+            const previewTag = document.getElementById('preview-tag');
+            
+            previewBg.style.backgroundColor = '#18181b';
+            previewBg.style.backgroundImage = '';
+            previewSymbol.innerHTML = '';
+            selectedInfo.innerHTML = `<span class="font-medium text-white">No background selected yet</span>`;
+            selectedDesc.textContent = '';
+            previewTag.innerHTML = '';
+        }
+
+        function showInstructions() {
+            const modalHTML = `
+                <div class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[999]" onclick="this.remove()">
+                    <div onclick="event.stopImmediatePropagation()" class="bg-zinc-900 border border-zinc-700 max-w-lg w-full mx-4 rounded-3xl p-8">
+                        <h3 class="font-display text-2xl tracking-tight mb-2">How to use this in your Padlet</h3>
+                        
+                        <ol class="space-y-4 text-sm mt-6">
+                            <li class="flex gap-4">
+                                <span class="font-mono text-indigo-400 w-5">1.</span> 
+                                <span>Browse and click any background option on the left to preview it live.</span>
+                            </li>
+                            <li class="flex gap-4">
+                                <span class="font-mono text-indigo-400 w-5">2.</span> 
+                                <span>When you find the perfect one (or upload your own), click <strong>"Use in Padlet"</strong>.</span>
+                            </li>
+                            <li class="flex gap-4">
+                                <span class="font-mono text-indigo-400 w-5">3.</span> 
+                                <span>Go to your Padlet and post in the <strong>"User Backgrounds"</strong> or introduction section. You can paste the copied text or upload a screenshot of the preview.</span>
+                            </li>
+                            <li class="flex gap-4">
+                                <span class="font-mono text-indigo-400 w-5">4.</span> 
+                                <span>Optional: Admins can collect everyone's choices and create a beautiful collage or apply group themes.</span>
+                            </li>
+                        </ol>
+                        
+                        <div class="mt-8 pt-6 border-t border-zinc-800 text-xs text-zinc-400">
+                            This tool helps people express identity safely and meaningfully. All choices are completely optional.
+                        </div>
+                        
+                        <button onclick="this.closest('.fixed').remove()" 
+                                class="mt-6 w-full py-3 text-sm font-semibold bg-white text-zinc-900 hover:bg-zinc-100 active:bg-zinc-200 transition rounded-3xl">
+                            Got it, thanks!
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHTML);
+        }
+
+        // Initialize everything
+        function initialize() {
+            initializeTailwind();
+            
+            // Render all options initially
+            renderOptions();
+            
+            // Set initial active filter
+            const allFilter = document.getElementById('filter-all');
+            if (allFilter) allFilter.classList.add('active', 'bg-indigo-600', 'text-white');
+            
+            // Keyboard support
+            const searchInput = document.getElementById('search-input');
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "Escape") {
+                    const search = document.getElementById('search-input');
+                    if (document.activeElement === search) {
+                        search.value = '';
+                        renderOptions();
+                    } else {
+                        resetSelection();
+                    }
+                }
+            });
+            
+            console.log('%c[Padlet Backgrounds] Interactive chooser initialized successfully.', 'color:#64748b');
+        }
+
+        // Boot app
+        window.onload = initialize;
+    </script>
+</body>
+</html>
